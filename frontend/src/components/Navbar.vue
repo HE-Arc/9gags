@@ -11,6 +11,7 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
+          <b-nav-item class="mr-2" href="/add"><i class="fas fa-plus"></i></b-nav-item>
           <b-nav-item href="/login">Login</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
