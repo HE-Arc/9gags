@@ -14,7 +14,11 @@
 
         <b-navbar-nav class="ml-auto">
           <b-nav-item class="mr-2" href="/add"><i class="fas fa-plus"></i></b-nav-item>
-          <b-nav-item href="/login">Login</b-nav-item>
+          <b-nav-item class="ml-4" @click.prevent="changeLog">
+            <i class="mr-1 fas fa-sign-out-alt" v-show="isLogged"></i>
+            <i class="mr-1 fas fa-sign-in-alt" v-show="!isLogged"></i>
+             {{textLog}}
+          </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -23,7 +27,28 @@
 
 <script>
   export default {
-    name: 'Navbar'
+    name: 'Navbar',
+    methods: {
+      changeLog () {
+        if(this.isLogged) {
+          this.$store.dispatch('auth/logout')
+          this.$router.push({name: 'index'})
+        } else {
+          this.$store.dispatch('auth/login')
+        }
+      }
+    },
+    computed: {
+      isLogged () {
+        return this.$store.state.auth.isLogged
+      },
+      textLog () {
+        if(this.isLogged) {
+          return'sign out'
+        }
+        return 'sign in'
+      }
+    }
   }
 </script>
 
