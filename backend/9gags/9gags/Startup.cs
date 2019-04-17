@@ -15,6 +15,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using _9gags.Models;
+using Microsoft.AspNetCore.Authorization;
+using _9gags.Requirement;
 
 namespace _9gags
 {
@@ -42,6 +44,14 @@ namespace _9gags
                 options.Authority = domain;
                 options.Audience = Configuration["Auth0:Audience"];
             });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("read:messages", policy => policy.Requirements.Add(new HasScopeRequirement("read:messages", domain)));
+            });
+
+            // register the scope authorization handler
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
