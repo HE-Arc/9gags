@@ -1,0 +1,12 @@
+{
+  "development": {
+    "apiUrl": "http://localhost:44342",
+    "callbackUrl": "http://localhost:8080/callback",
+    "baseUrl": "http://localhost:8080"
+  },
+  "production": {
+    "apiUrl": "https://api.9gags.com",
+    "callbackUrl": "https://9gags.com/callback",
+    "baseUrl": "https://9gags.com"
+  }
+}
