@@ -18,7 +18,7 @@ namespace _9gags.Controllers
         [Authorize]
         public  ActionResult<IEnumerable<string>> Get()
         {
-           
+            //Console.Out.WriteLine(this.User);
             return new string[] { "value1" ,"value2" };
         }
 
