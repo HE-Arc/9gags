@@ -11,8 +11,8 @@ namespace _9gags.Models
         public string email { get; set; }
         public string username { get; set; }
 
-        public List<Vote> Votes { get; set; }
-        public List<Comment> Comments { get; set; }
-        public List<View> Views { get; set; }
+        public List<Vote> Votes { get; set; } = new List<Vote>();
+        public List<Comment> Comments { get; set; } = new List<Comment>();
+        public List<View> Views { get; set; } = new List<View>();
     }
 }

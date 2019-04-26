@@ -27,10 +27,59 @@ namespace _9gags.Controllers
 
         #region get image news
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Article>>> GeArticles()
+        public async Task<ActionResult<Article>> GeArticles()
         {
-            
-            return await _context.Articles.OrderByDescending(s => s.ReleaseDate).ToListAsync();
+            long id = 1;
+            var user = _context.Users
+            .Include(e => e.Views)
+            .ThenInclude(e => e.Article).Where(u => u.Id == id).First();
+
+            var dbArticles = await _context.Articles.ToListAsync();
+           Article resultArticle = null;
+            try
+            {
+                var articleView = user.Views.Select(v => v.Article);
+                resultArticle = dbArticles.Where(aDb => !articleView.Any(aView => aView.Id == aDb.Id))
+                    .OrderByDescending(a => a.ReleaseDate).First();
+
+            }
+            catch(Exception e)
+            {
+                resultArticle = dbArticles.OrderByDescending(a => a.ReleaseDate).First();
+            }
+           
+            user.Views.Add(new View { Article = resultArticle });
+            await _context.SaveChangesAsync();
+            return resultArticle;
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<Article>> GeArticles()
+        {
+            long id = 1;
+            var user = _context.Users
+            .Include(e => e.Views)
+            .ThenInclude(e => e.Article).Where(u => u.Id == id).First();
+
+            var dbArticles = await _context.Articles.ToListAsync();
+            Article resultArticle = null;
+            try
+            {
+                var articleView = user.Views.Select(v => v.Article);
+                resultArticle = dbArticles.Where(aDb => !articleView.Any(aView => aView.Id == aDb.Id))
+                    .OrderByDescending(a => a.ReleaseDate).First();
+
+            }
+            catch (Exception e)
+            {
+                resultArticle = dbArticles.OrderByDescending(a => a.ReleaseDate).First();
+            }
+
+            user.Views.Add(new View { Article = resultArticle });
+            await _context.SaveChangesAsync();
+            return resultArticle;
+
         }
         #endregion
 
