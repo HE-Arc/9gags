@@ -13,6 +13,7 @@ namespace _9gags.Models
         public string Path { get; set; }
         public int points { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd MM yyyy}")]
         [DataType(DataType.Date)]
         public DateTime ReleaseDate { get; set; }
         public List<Vote> Votes { get; set; }

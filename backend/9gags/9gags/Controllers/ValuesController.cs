@@ -15,7 +15,6 @@ namespace _9gags.Controllers
     {
         // GET api/values
         [HttpGet]
-        [Authorize]
         public  ActionResult<IEnumerable<string>> Get()
         {
             //Console.Out.WriteLine(this.User);
