@@ -72,12 +72,6 @@ namespace _9gags.Controllers
             return await _context.Articles.ToListAsync();
         }
 
-        [HttpGet]
-        [Route("api/[controller]/news")]
-        public async Task<ActionResult<IEnumerable<Article>>> GeArticlesNews()
-        {
-            return await _context.Articles.ToListAsync();
-        }
         #endregion
         #region private methods
 

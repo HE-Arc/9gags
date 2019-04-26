@@ -23,11 +23,19 @@ namespace _9gags.Controllers
             _environment = environment;
             _context = context;
         }
+
+        public class ArticleVote
+        {
+            public Article Article { get; set; }
+            public int vote { get; set; }
+        }
+            
+
         #endregion
 
         #region get image news
         [HttpGet]
-        public async Task<ActionResult<Article>> GetArticles()
+        public async Task<ActionResult<ArticleVote>> GetArticles()
         {
             long id = 1;
             var user = _context.Users
@@ -51,11 +59,30 @@ namespace _9gags.Controllers
             {
                 user.Views.Add(new View { Article = resultArticle });
                 await _context.SaveChangesAsync();
-                return resultArticle;
+                int point;
+                try
+                {
+                    var voteImage = _context.Articles
+                   .Include(e => e.Votes).Where(a => a.Id == resultArticle.Id).First();
+
+                    point = voteImage.Votes.Select(v => v.vote).Sum();
+                }
+                catch(Exception ex)
+                {
+                    point = 0;
+                }
+
+                resultArticle.Views.Clear();
+                resultArticle.Votes.Clear();
+                return new ArticleVote() {
+                Article = resultArticle,
+                vote = point
+                };
+
             }
             catch (Exception e)
             {
-                return new Article();
+                return new ArticleVote();
             }
 
             
