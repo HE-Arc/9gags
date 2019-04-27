@@ -26,54 +26,57 @@ namespace _9gags.Controllers
         }
         #endregion
         #region points
-        // PUT: api/image/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult<string>> PutPoint(long id, int point)
+        //Post : /api/point
+        [HttpPost]
+        public async Task<ActionResult<string>> PostPoint(long id, int point)
         {
             Article article = _context.Articles.Find(id);
-            int[] pointsOK = new int[] { 1, 0, -1 };
-            if (article == null || id != article.Id || !pointsOK.Contains(point))
+            if (article == null || id != article.Id)
             {
                 return "err";
             }
 
             long iduser = 1;
             var user = _context.Users
-            .Include(e => e.Votes)
-            .ThenInclude(e => e.Article).Where(u => u.Id == iduser).First();
-            //var voteArticle = user.Votes.Where(v => v.ArticleId == article.Id);
-            var voteArticle = user.Votes.Where(v => v.Article.Id == article.Id);
+            .Include(e => e.Comments)
+            .Where(u => u.Id == iduser).First();
+
+            var votes = _context.Users.Include(e => e.Votes).ThenInclude(e => e.Article).Where(u => u.Id == iduser).First().Votes.Where(u=>u.Article.Id == article.Id);
+            int realPoint = getVerifiedPoint(point);
+            int oldPoint = 0;
 
             try
             {
-                if (voteArticle.Any())
-                {
-                    var currentPoint = voteArticle.First().Point;
-                    if (currentPoint != point)
-                    {
-                        article.points += point;
-                    }
-                    voteArticle.First().Point = point;
-                }
-                else
+                if (!votes.Any())
                 {
                     user.Votes.Add(new Vote
                     {
                         Article = article,
-                        Point = point,
+                        User = user,
+                        Point = realPoint
                     });
-
                 }
+                else
+                {
+                    oldPoint = votes.First().Point;
+                    votes.First().Point = realPoint;
+                }
+                article.points -= oldPoint;
+                article.points += realPoint;
+                await _context.SaveChangesAsync();
+                return "ok";
+
             }
             catch (Exception e)
             {
                 return e.ToString();
-            }
-            await _context.SaveChangesAsync();
-            return "ok";
+            }            
         }
         #endregion
  
-
+        private int getVerifiedPoint(int point)
+        {
+            return point > 0 ? 1 : (point < 0 ? -1 : 0); //If value greather or equal to 1 set to 1, if value smaller or equal to -1 set to -1 else 0! Ensure the value is between -1 and 1
+        }
     }
 }
