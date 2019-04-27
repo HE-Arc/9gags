@@ -13,7 +13,8 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <b-nav-item v-b-modal.modal-create class="mr-2"><i class="fas fa-plus"></i></b-nav-item>
+          <b-nav-item v-b-modal.modal-create class="mr-2"><i class="fas fa-recycle"></i></b-nav-item>
+          <b-nav-item class="mr-2" @click="resetData"><i class="fas fa-plus"></i></b-nav-item>
           <b-nav-item class="ml-4" @click.prevent="changeLog">
             <i class="mr-1 fas fa-sign-out-alt" v-show="isLogged"></i>
             <i class="mr-1 fas fa-sign-in-alt" v-show="!isLogged"></i>
@@ -42,7 +43,14 @@
         } else {
           this.$store.dispatch('auth/login')
         }
-      }
+      },
+      resetData() {
+        this.axios.delete("https://localhost:44342/api/data").then(result => {
+          if(result.data === "ok") {
+            //TODO reload post
+          }
+        })
+      },
     },
     computed: {
       isLogged () {

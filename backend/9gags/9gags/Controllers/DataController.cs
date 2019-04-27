@@ -62,7 +62,7 @@ namespace _9gags.Controllers
             }
             catch(Exception e)
             {
-                resultArticle = dbArticles.OrderByDescending(a => a.ReleaseDate).First();
+                return new Article();
             }
            
             try
