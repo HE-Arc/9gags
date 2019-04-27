@@ -54,6 +54,7 @@
     },
     mounted () {
       this.loaded = true
+      this.articleLocal = this.article //Load for post page
     },
     methods: {
       calcMarginButton() {
@@ -106,10 +107,8 @@
           }
         })
       },
-      article(newValue, oldValue) {
-        if(this.articleLocal.id == -1) {
-          this.articleLocal = newValue
-        }
+      article(newValue, oldValue) { //Load for id page
+        this.articleLocal = newValue
       },
     }
   }
