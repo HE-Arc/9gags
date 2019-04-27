@@ -52,8 +52,6 @@ namespace _9gags.Migrations
 
                     b.HasKey("ArticleId", "UserId");
 
-                    b.HasAlternateKey("Id");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Comment");

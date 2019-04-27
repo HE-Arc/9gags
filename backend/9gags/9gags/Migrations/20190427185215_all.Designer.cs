@@ -10,8 +10,8 @@ using _9gags.Models;
 namespace _9gags.Migrations
 {
     [DbContext(typeof(GagsContext))]
-    [Migration("20190427182010_news9")]
-    partial class news9
+    [Migration("20190427185215_all")]
+    partial class all
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,8 +53,6 @@ namespace _9gags.Migrations
                     b.Property<DateTime>("ReleaseDate");
 
                     b.HasKey("ArticleId", "UserId");
-
-                    b.HasAlternateKey("Id");
 
                     b.HasIndex("UserId");
 
