@@ -14,11 +14,12 @@ namespace _9gags.Controllers
     public class ValuesController : ControllerBase
     {
         // GET api/values
+        [Authorize]
         [HttpGet]
-        public  ActionResult<IEnumerable<string>> Get()
+        public  ActionResult<string> Get()
         {
             //Console.Out.WriteLine(this.User);
-            return new string[] { "value1" ,"value2" };
+            return User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
         }
 
         // GET api/values/5
