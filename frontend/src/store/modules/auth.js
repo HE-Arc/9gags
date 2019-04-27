@@ -48,7 +48,7 @@ const actions = {
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'))
     if(new Date().getTime() < expiresAt) {
       this.commit('SETLOGGED', true)
-      this.axios.setToken(localStorage.getItem('access_token'), 'Baerer')
+      this.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`
     } else {
       this.commit('SETLOGGED', false)
     }
