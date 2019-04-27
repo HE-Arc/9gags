@@ -16,7 +16,7 @@ namespace _9gags.Controllers
     public class ImageController : ControllerBase
     {
         #region initalisation 
-        private static readonly string directory = "\\uploads\\";
+        private static readonly string directory = "/uploads/";
         private readonly GagsContext _context;
         public static IHostingEnvironment _environment;
         public ImageController(IHostingEnvironment environment, GagsContext context)
@@ -72,6 +72,37 @@ namespace _9gags.Controllers
             return await _context.Articles.ToListAsync();
         }
 
+        #endregion
+        #region points
+        // PUT: api/image/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTodoItem(long id, Article item, int point)
+        {
+           int[] pointsOK = new int[] { 1, 0, -1 };
+            if (id != item.Id || !pointsOK.Contains(point))
+            {
+                return BadRequest();
+            }
+
+            long iduser = 1;
+            var user = _context.Users
+            .Include(e => e.Votes)
+            .ThenInclude(e => e.Article).Where(u => u.Id == iduser).First();
+
+            try
+            {
+                if (!user.Votes.ToList().Any())
+                {
+                    user.Votes.Clear();
+                    await _context.SaveChangesAsync();
+                }
+            }catch(Exception e)
+            {
+                return NoContent();
+            }
+
+            return NoContent();
+        }
         #endregion
         #region private methods
 
