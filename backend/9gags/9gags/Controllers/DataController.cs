@@ -13,29 +13,24 @@ using Microsoft.EntityFrameworkCore;
 namespace _9gags.Controllers
 {
     [Route("api/[controller]")]
-    public class NewsController : ControllerBase
+    public class DataController : ControllerBase
     {
         #region initalisation 
         private readonly GagsContext _context;
         public static IHostingEnvironment _environment;
-        public NewsController(IHostingEnvironment environment, GagsContext context)
+        public DataController(IHostingEnvironment environment, GagsContext context)
         {
             _environment = environment;
             _context = context;
         }
 
-        public class ArticleVote
-        {
-            public Article Article { get; set; }
-            public int vote { get; set; }
-        }
-            
+         
 
         #endregion
 
         #region get image news
-        [HttpGet]
-        public async Task<ActionResult<ArticleVote>> GetArticles()
+        [HttpGet("{mode}")]
+        public async Task<ActionResult<Article>> GetArticles(long mode)
         {
             long id = 1;
             var user = _context.Users
@@ -46,8 +41,21 @@ namespace _9gags.Controllers
             try
             {
                 var articleView = user.Views.Select(v => v.Article);
-                resultArticle = dbArticles.Where(aDb => !articleView.Any(aView => aView.Id == aDb.Id))
+                if(mode == 1)
+                {
+                    resultArticle = dbArticles.Where(aDb => !articleView.Any(aView => aView.Id == aDb.Id))
                     .OrderByDescending(a => a.ReleaseDate).First();
+                }
+                else if(mode == 2)
+                {
+                    resultArticle = dbArticles.Where(aDb => !articleView.Any(aView => aView.Id == aDb.Id))
+                    .OrderByDescending(a => a.ReleaseDate).OrderByDescending(a => a.points).First();
+                }
+                else
+                {
+                    return new Article();
+                }
+
 
             }
             catch(Exception e)
@@ -62,10 +70,7 @@ namespace _9gags.Controllers
                 int point;
                 try
                 {
-                    var voteImage = _context.Articles
-                   .Include(e => e.Votes).Where(a => a.Id == resultArticle.Id).First();
-
-                    point = voteImage.Votes.Select(v => v.Point).Sum();
+                    point = resultArticle.points;
                 }
                 catch(Exception ex)
                 {
@@ -74,15 +79,12 @@ namespace _9gags.Controllers
 
                 resultArticle.Views.Clear();
                 resultArticle.Votes.Clear();
-                return new ArticleVote() {
-                Article = resultArticle,
-                vote = point
-                };
+                return resultArticle;
 
             }
             catch (Exception e)
             {
-                return new ArticleVote();
+                return new Article();
             }
 
             

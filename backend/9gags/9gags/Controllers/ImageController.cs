@@ -102,6 +102,11 @@ namespace _9gags.Controllers
             {
                 if (voteArticle.Any())
                 {
+                    var currentPoint = voteArticle.First().Point;
+                    if(currentPoint != point)
+                    {
+                        article.points += point;
+                    }
                     voteArticle.First().Point = point;
                 }
                 else
@@ -135,6 +140,7 @@ namespace _9gags.Controllers
             Article article = new Article {
                 Title = title,
                 Path = path,
+                points = 0,
                 ReleaseDate = DateTime.Now
         };
             _context.Articles.Add(article);
