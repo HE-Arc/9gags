@@ -20,18 +20,18 @@ const getters = {
 }
 
 const actions = {
-  handleAuthentication() {
+  handleAuthentication({}, payload) {
     webAuth.parseHash((err, authResult) => {
       if(authResult && authResult.accessToken) {
-        this.axios.defaults.headers.common['Authorization'] = `Bearer ${authResult.accessToken}`
+        payload.axios.defaults.headers.common['Authorization'] = `Bearer ${authResult.accessToken}`
         const expiresAt = JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime())
         localStorage.setItem('access_token', authResult.accessToken)
         localStorage.setItem('expires_at', expiresAt)
-        this.commit('SETLOGGED', true)
+        this.commit('auth/SETLOGGED', true)
         //TODO refresh username in backend.
+        payload.router.push({name: 'home'})
       }
     })
-    this.router.replace({name: 'home'})
   },
   login() {
     webAuth.authorize()

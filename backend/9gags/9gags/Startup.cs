@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Http;
 using _9gags.Models;
 using Microsoft.AspNetCore.Authorization;
 using _9gags.Requirement;
@@ -29,9 +30,22 @@ namespace _9gags
 
         public IConfiguration Configuration { get; }
 
+
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:8080")
+                    .AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                });
+            });
+
             services.AddDbContext<GagsContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("gagsConnection")));
 
             string domain = $"https://{Configuration["Auth0:Domain"]}/";
@@ -53,7 +67,11 @@ namespace _9gags
             // register the scope authorization handler
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddMvc()
+                .AddJsonOptions(
+                    options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,10 +85,16 @@ namespace _9gags
             {
                 app.UseHsts();
             }
-
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseStaticFiles();
+
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync("MVC didn't find anything!");
+            });
         }
     }
 }
