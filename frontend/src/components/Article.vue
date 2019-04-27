@@ -26,9 +26,9 @@
                 <b-button class="mr-2 mt-2" variant="outline-primary" @click.stop="postComment">Post</b-button>
               </div>
             </div>
-            <div class="col-12 my-1 text-left border border-secondary rounded" v-for="(c,i) in comments" :key="i">
+            <div class="col-12 my-1 text-left border border-secondary rounded" v-for="(c,i) in article.comments" :key="i">
               <small class="my-0">{{c.user}}</small>
-              <p>{{c.content}}</p>
+              <p>{{c.comments}}</p>
             </div>
           </div>
         </b-card-body>
@@ -49,14 +49,7 @@
         vote: 0,
         actualVote: 0,
         showComment: false,
-        newCommentContent: "",        
-        comments: [
-          {user: "User1", content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet esse tempora cupiditate porro aspernatur veniam deserunt, adipisci unde asperiores impedit a nam quasi et, odio vitae? Deleniti et dolorum aliquid!"},
-          {user: "User2", content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet esse tempora cupiditate porro aspernatur veniam deserunt, adipisci unde asperiores impedit a nam quasi et, odio vitae? Deleniti et dolorum aliquid!"},
-          {user: "User3", content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet esse tempora cupiditate porro aspernatur veniam deserunt, adipisci unde asperiores impedit a nam quasi et, odio vitae? Deleniti et dolorum aliquid!"},
-          {user: "User4", content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet esse tempora cupiditate porro aspernatur veniam deserunt, adipisci unde asperiores impedit a nam quasi et, odio vitae? Deleniti et dolorum aliquid!"},
-          {user: "User5", content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet esse tempora cupiditate porro aspernatur veniam deserunt, adipisci unde asperiores impedit a nam quasi et, odio vitae? Deleniti et dolorum aliquid!"},
-        ]
+        newCommentContent: "",
       }
     },
     mounted () {
@@ -69,7 +62,7 @@
       },
       postComment() {
         if(this.newCommentContent) {
-          this.comments.push({user: 'actualUser', content: this.newCommentContent}) //TODO replace with axios in backend
+          //this.comments.push({user: 'actualUser', content: this.newCommentContent}) //TODO replace with axios in backend
           this.newCommentContent = ""
         }
       },

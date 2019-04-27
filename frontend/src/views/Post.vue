@@ -44,12 +44,17 @@
     methods: {
       getArticles () {
         //Request articles
-        this.axios.get("https://localhost:44342/api/image").then(result => {
-          this.articles = result.data
-        })
+        for(let i = 0; i<5; ++i) {
+          this.addArticle()
+        }
       },
       addArticle () {
-        this.articles.push({ id: -1, name: `Titre `, image_url: `https://placeimg.com/300/400/any`, vote: 0 })
+        this.axios.get("https://localhost:44342/api/data/1").then(result => {
+            let article = result.data
+            if(article.title !== null) {
+              this.articles.push(article)
+            }
+          })
       },
       bottomVisible () {
         const scrollY = window.scrollY

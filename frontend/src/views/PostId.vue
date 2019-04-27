@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    {{$route.params.id}}
     <Article :article="article"/>
   </div>
 </template>
@@ -38,7 +37,14 @@
     methods: {
       getArticle () {
         //TODO Get article id
-        this.article={ id: 0, name: `Titre 0`, image_url: `https://placeimg.com/300/400/0`, vote: 0 }
+        this.axios.get(`https://localhost:44342/api/image/${this.$route.params.id}`).then(result => {
+          let article = result.data
+          if(article.text !== null) {
+            this.article=result.data
+          } else {
+            //TODO redirect to home + show error
+          }
+        })
       },
     },
   }

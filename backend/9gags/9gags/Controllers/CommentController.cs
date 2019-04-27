@@ -27,7 +27,7 @@ namespace _9gags.Controllers
         #endregion
         #region comment
         // PUT: api/comment/5
-        [HttpPut("{id}")]
+        [HttpPost]
         public async Task<ActionResult<string>> PutPoint(long id, string comment)
         {
             Article article = _context.Articles.Find(id);
