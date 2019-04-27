@@ -13,7 +13,7 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <b-nav-item class="mr-2" href="/add"><i class="fas fa-plus"></i></b-nav-item>
+          <b-nav-item v-b-modal.modal-create class="mr-2"><i class="fas fa-plus"></i></b-nav-item>
           <b-nav-item class="ml-4" @click.prevent="changeLog">
             <i class="mr-1 fas fa-sign-out-alt" v-show="isLogged"></i>
             <i class="mr-1 fas fa-sign-in-alt" v-show="!isLogged"></i>
@@ -22,12 +22,18 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <modal-create />
   </div>
 </template>
 
 <script>
+  import ModalCreate from './ModalCreate.vue'
+
   export default {
     name: 'Navbar',
+    components: {
+      ModalCreate,
+    },
     methods: {
       changeLog () {
         if(this.isLogged) {
