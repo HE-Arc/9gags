@@ -6,11 +6,11 @@
             id="imageTitle"
             v-model="title"
             required
-            placeholder="Enter image title"
+            placeholder="Enter image title" :state="Boolean(title)"
             ></b-form-input>
         </b-form-group>
             <b-form-group id="input-group-2" label="Image file:" label-for="image">
-            <b-form-file v-model="image" id="image" :state="Boolean(image)" placeholder="Choose a picture..." drop-placeholder="Drop picture here..." accept="image/png, image/jpeg"></b-form-file>
+            <b-form-file v-model="image" id="image" :state="Boolean(image)" placeholder="Choose a picture..." drop-placeholder="Drop picture here..." accept="image/*"></b-form-file>
             </b-form-group>
             <div slot="modal-footer" class="w-100">
                 <div class="float-right">
@@ -28,7 +28,7 @@
     data() {
         return {
             image: null,
-            title: "",
+            title: null,
         }
     },
     methods:{
@@ -37,11 +37,14 @@
         },
         postPicture() {
             //POST
-            this.axios.post('https://localhost:44342/api/image', {FileUploadAPI: this.image, title: this.title}).then(result => {
-                console.log(result)
+            const fd = new FormData()
+            fd.append('file',  this.image)
+            fd.append('title', this.title)
+            this.axios.post('https://localhost:44342/api/image', fd).then(result => {
+                //TODO redirect to post
             })
             this.hideModal()
         }
-    }
+    },
   }
 </script>

@@ -8,7 +8,7 @@
   import Article from '../components/Article'
 
   export default {
-    name: 'home',
+    name: 'Post',
     components: {
       Article,
     },
@@ -45,11 +45,11 @@
       getArticles () {
         //Request articles
         for (let i = 0; i < 5; i++) {
-          this.articles.push({ name: `Titre ${i}`, image_url: `https://placeimg.com/300/400/${i}`, vote: i })
+          this.articles.push({ id: i, name: `Titre ${i}`, image_url: `https://placeimg.com/300/400/${i}`, vote: i })
         }
       },
       addArticle () {
-        this.articles.push({ name: `Titre `, image_url: `https://placeimg.com/300/400/any`, vote: 0 })
+        this.articles.push({ id: -1, name: `Titre `, image_url: `https://placeimg.com/300/400/any`, vote: 0 })
       },
       bottomVisible () {
         const scrollY = window.scrollY

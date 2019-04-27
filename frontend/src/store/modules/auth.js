@@ -20,7 +20,7 @@ const getters = {
 }
 
 const actions = {
-  handleAuthentication({}, payload) {
+  handleAuthentication(_, payload) {
     webAuth.parseHash((err, authResult) => {
       if(authResult && authResult.accessToken) {
         payload.axios.defaults.headers.common['Authorization'] = `Bearer ${authResult.accessToken}`
@@ -39,18 +39,18 @@ const actions = {
   logout() {
     localStorage.removeItem('access_token')
     localStorage.removeItem('expires_at')
-    this.commit('SETLOGGED', false)
+    this.commit('auth/SETLOGGED', false)
     webAuth.logout({
       returnTo: global.gConfig.baseUrl,
     })
   },
-  authenticatedFromToken() {
+  authenticatedFromToken(_, payload) {
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'))
     if(new Date().getTime() < expiresAt) {
-      this.commit('SETLOGGED', true)
-      this.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`
+      this.commit('auth/SETLOGGED', true)
+      payload.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`
     } else {
-      this.commit('SETLOGGED', false)
+      this.commit('auth/SETLOGGED', false)
     }
   }
 }
