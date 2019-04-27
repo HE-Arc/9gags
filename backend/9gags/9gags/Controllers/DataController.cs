@@ -36,7 +36,9 @@ namespace _9gags.Controllers
             var user = _context.Users
             .Include(e => e.Views)
             .ThenInclude(e => e.Article).Where(u => u.Id == id).First();
-            var dbArticles = await _context.Articles.ToListAsync();
+            var dbArticles = await _context.Articles.Include(a => a.Comments)
+                .ThenInclude(c => c.User)
+                .ToListAsync();
            Article resultArticle = null;
             try
             {
