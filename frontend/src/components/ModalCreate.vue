@@ -6,7 +6,7 @@
             id="imageTitle"
             v-model="title"
             required
-            placeholder="Enter image title"
+            placeholder="Enter image title" :state="Boolean(title)"
             ></b-form-input>
         </b-form-group>
             <b-form-group id="input-group-2" label="Image file:" label-for="image">
@@ -28,7 +28,7 @@
     data() {
         return {
             image: null,
-            title: "",
+            title: null,
         }
     },
     methods:{

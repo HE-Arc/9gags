@@ -18,10 +18,13 @@
             </div>
           </div>
           <br>
-          <b-button class="my-3" @click="showComment= !showComment">Show comment</b-button>
+          <b-button class="my-3" @click="showComment= !showComment">{{showComment ? 'Hide comment' : 'Show comment'}}</b-button>
 
-          <div v-show="showComment">
-            Coucou
+          <div v-show="showComment" class="row border border-secondary rounded px-2">
+            <div class="col-12 my-1 text-left border border-secondary rounded" v-for="i in 10">
+              <small class="my-0">Title</small>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet esse tempora cupiditate porro aspernatur veniam deserunt, adipisci unde asperiores impedit a nam quasi et, odio vitae? Deleniti et dolorum aliquid!</p>
+            </div>
           </div>
         </b-card-body>
       </b-card>
