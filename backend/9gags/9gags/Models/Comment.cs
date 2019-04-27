@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace _9gags.Models
 {
@@ -14,6 +15,11 @@ namespace _9gags.Models
         public long UserId { get; set; }
         public User User { get; set; }
 
+
+        [DataType(DataType.Date)]
+        public DateTime ReleaseDate { get; set; }
+
         public string Comments { get; set; }
+
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using _9gags.Models;
 
 namespace _9gags.Migrations
 {
     [DbContext(typeof(GagsContext))]
-    partial class GagsContextModelSnapshot : ModelSnapshot
+    [Migration("20190427160009_news7")]
+    partial class news7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,11 +46,7 @@ namespace _9gags.Migrations
 
                     b.Property<long>("UserId");
 
-                    b.Property<string>("Comments");
-
                     b.Property<long>("Id");
-
-                    b.Property<DateTime>("ReleaseDate");
 
                     b.HasKey("ArticleId", "UserId");
 

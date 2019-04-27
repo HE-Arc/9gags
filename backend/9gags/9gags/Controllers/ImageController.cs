@@ -71,12 +71,19 @@ namespace _9gags.Controllers
         {
             return await _context.Articles.ToListAsync();
         }
+        // PUT: api/image/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Article>> GetImage(long id)
+        {
+            Article article = _context.Articles.Include(e => e.Comments).Where(a => a.Id == id).First();
+            return article;
+        }
 
         #endregion
         #region points
         // PUT: api/image/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<string>> PutTodoItem(long id, int point)
+        public async Task<ActionResult<string>> PutPoint(long id, int point)
         {
             Article article = _context.Articles.Find(id);
            int[] pointsOK = new int[] { 1, 0, -1 };
@@ -89,13 +96,13 @@ namespace _9gags.Controllers
             var user = _context.Users
             .Include(e => e.Votes)
             .ThenInclude(e => e.Article).Where(u => u.Id == iduser).First();
+            var voteArticle = user.Votes.Where(v => v.ArticleId == article.Id);
 
             try
             {
-                if (user.Votes.ToList().Any())
+                if (voteArticle.Any())
                 {
-                    var vote = user.Votes.Where(v => v.ArticleId == article.Id).First();
-                    vote.Point = point;
+                    voteArticle.First().Point = point;
                 }
                 else
                 {
