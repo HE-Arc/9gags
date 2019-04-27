@@ -40,17 +40,21 @@ namespace _9gags.Migrations
 
             modelBuilder.Entity("_9gags.Models.Comment", b =>
                 {
-                    b.Property<long>("ArticleId");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("UserId");
+                    b.Property<long?>("ArticleId");
 
                     b.Property<string>("Comments");
 
-                    b.Property<long>("Id");
-
                     b.Property<DateTime>("ReleaseDate");
 
-                    b.HasKey("ArticleId", "UserId");
+                    b.Property<long?>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
 
                     b.HasIndex("UserId");
 
@@ -74,13 +78,17 @@ namespace _9gags.Migrations
 
             modelBuilder.Entity("_9gags.Models.View", b =>
                 {
-                    b.Property<long>("ArticleId");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("UserId");
+                    b.Property<long?>("ArticleId");
 
-                    b.Property<long>("Id");
+                    b.Property<long?>("UserId");
 
-                    b.HasKey("ArticleId", "UserId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
 
                     b.HasIndex("UserId");
 
@@ -89,15 +97,19 @@ namespace _9gags.Migrations
 
             modelBuilder.Entity("_9gags.Models.Vote", b =>
                 {
-                    b.Property<long>("ArticleId");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("UserId");
-
-                    b.Property<long>("Id");
+                    b.Property<long?>("ArticleId");
 
                     b.Property<int>("Point");
 
-                    b.HasKey("ArticleId", "UserId");
+                    b.Property<long?>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
 
                     b.HasIndex("UserId");
 
@@ -108,39 +120,33 @@ namespace _9gags.Migrations
                 {
                     b.HasOne("_9gags.Models.Article", "Article")
                         .WithMany("Comments")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ArticleId");
 
                     b.HasOne("_9gags.Models.User", "User")
                         .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("_9gags.Models.View", b =>
                 {
                     b.HasOne("_9gags.Models.Article", "Article")
                         .WithMany("Views")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ArticleId");
 
                     b.HasOne("_9gags.Models.User", "User")
                         .WithMany("Views")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("_9gags.Models.Vote", b =>
                 {
                     b.HasOne("_9gags.Models.Article", "Article")
                         .WithMany("Votes")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ArticleId");
 
                     b.HasOne("_9gags.Models.User", "User")
                         .WithMany("Votes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

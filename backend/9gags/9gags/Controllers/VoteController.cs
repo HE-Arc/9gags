@@ -41,7 +41,8 @@ namespace _9gags.Controllers
             var user = _context.Users
             .Include(e => e.Votes)
             .ThenInclude(e => e.Article).Where(u => u.Id == iduser).First();
-            var voteArticle = user.Votes.Where(v => v.ArticleId == article.Id);
+            //var voteArticle = user.Votes.Where(v => v.ArticleId == article.Id);
+            var voteArticle = user.Votes.Where(v => v.Article.Id == article.Id);
 
             try
             {
