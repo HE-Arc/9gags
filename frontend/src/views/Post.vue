@@ -44,9 +44,9 @@
     methods: {
       getArticles () {
         //Request articles
-        for (let i = 0; i < 5; i++) {
-          this.articles.push({ id: i, name: `Titre ${i}`, image_url: `https://placeimg.com/300/400/${i}`, vote: i })
-        }
+        this.axios.get("https://localhost:44342/api/image").then(result => {
+          this.articles = result.data
+        })
       },
       addArticle () {
         this.articles.push({ id: -1, name: `Titre `, image_url: `https://placeimg.com/300/400/any`, vote: 0 })

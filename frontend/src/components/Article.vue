@@ -1,29 +1,29 @@
 <template>
-  <b-container class="my-3" @click="goToArticle">
+  <b-container class="my-3" @click.stop="goToArticle">
     <b-card-group deck>
       <b-card border-variant="dark" :header="article.name" align="center">
         <b-card-body>
-          <b-img ref="imgArticle" :src="article.image_url" fluid alt="" @load="calcMarginButton"/>
+          <b-img ref="imgArticle" :src="'https://localhost:44342' + article.path" fluid alt="" @load="calcMarginButton" style="max-width: 80%;"/>
           <div class="float-left" ref="buttonArticle" :style="{marginTop: marginImgArticle + 'px'}">
             <div class="col">
               <div class="row">
-                <b-button @click="actualVote=1" :style="{color: actualVote===1 ? '#25DD25' : 'white'}"><i class="fas fa-thumbs-up"></i></b-button>
+                <b-button @click.stop="actualVote=1" :style="{color: actualVote===1 ? '#25DD25' : 'white'}"><i class="fas fa-thumbs-up"></i></b-button>
               </div>
               <div class="row justify-content-md-center my-2" :style="{color: voteColor}">
                   {{vote}}
               </div>
               <div class="row">
-                <b-button @click="actualVote=-1"  :style="{color: actualVote===-1 ? '#FF0000' : 'white'}"><i class="fas fa-thumbs-down"></i></b-button>
+                <b-button @click.stop="actualVote=-1"  :style="{color: actualVote===-1 ? '#FF0000' : 'white'}"><i class="fas fa-thumbs-down"></i></b-button>
               </div>
             </div>
           </div>
           <br>
-          <b-button class="my-3" @click="showComment= !showComment">{{showComment ? 'Hide comment' : 'Show comment'}}</b-button>
+          <b-button class="my-3" @click.stop="showComment= !showComment">{{showComment ? 'Hide comment' : 'Show comment'}}</b-button>
           <div v-show="showComment" class="row border border-secondary rounded px-2">
             <div class="col-12 my-1 py-2 text-left border border-secondary rounded">
               <b-form-textarea placeholder="Your comment..." v-model="newCommentContent"></b-form-textarea>
               <div class="text-right">
-                <b-button class="mr-2 mt-2" variant="outline-primary" @click="postComment">Post</b-button>
+                <b-button class="mr-2 mt-2" variant="outline-primary" @click.stop="postComment">Post</b-button>
               </div>
             </div>
             <div class="col-12 my-1 text-left border border-secondary rounded" v-for="(c,i) in comments" :key="i">
