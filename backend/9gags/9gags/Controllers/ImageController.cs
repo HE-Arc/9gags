@@ -80,47 +80,7 @@ namespace _9gags.Controllers
         }
 
         #endregion
-        #region points
-        // PUT: api/image/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult<string>> PutPoint(long id, int point)
-        {
-            Article article = _context.Articles.Find(id);
-           int[] pointsOK = new int[] { 1, 0, -1 };
-            if (article == null || id != article.Id || !pointsOK.Contains(point))
-            {
-                return "err";
-            }
-
-            long iduser = 1;
-            var user = _context.Users
-            .Include(e => e.Votes)
-            .ThenInclude(e => e.Article).Where(u => u.Id == iduser).First();
-            var voteArticle = user.Votes.Where(v => v.ArticleId == article.Id);
-
-            try
-            {
-                if (voteArticle.Any())
-                {
-                    voteArticle.First().Point = point;
-                }
-                else
-                {
-                    user.Votes.Add(new Vote
-                    {
-                        Article = article,
-                        Point = point,
-                    });
-                    
-                }
-            }catch(Exception e)
-            {
-                return e.ToString();
-            }
-            await _context.SaveChangesAsync();
-            return "ok";
-        }
-        #endregion
+       
         #region private methods
 
         private string GenerateImageName(string filename)
@@ -135,6 +95,7 @@ namespace _9gags.Controllers
             Article article = new Article {
                 Title = title,
                 Path = path,
+                points = 0,
                 ReleaseDate = DateTime.Now
         };
             _context.Articles.Add(article);
