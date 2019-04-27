@@ -61,16 +61,11 @@
       postComment() {
         if(this.newCommentContent) {
           const fd = new FormData()
-            fd.append('id',  this.article.id)
-            fd.append('comment', this.newCommentContent)
+          fd.append('id',  this.article.id)
+          fd.append('comment', this.newCommentContent)
           this.axios.post('https://localhost:44342/api/comment', fd).then(result => {
             if(result.data === "ok") {
-             this.axios.get(`https://localhost:44342/api/image/${this.article.id}`).then(result => {
-                let article = result.data
-                if(article.text !== null) {
-                 this.article=result.data
-                }
-              })
+             reloadActualPicture()
             }
             this.newCommentContent = ""
             })
@@ -79,6 +74,14 @@
       goToArticle() {
         this.$router.push({name: 'post-id', params: {id: this.article.id}})
       },
+      reloadActualPicture() {
+        this.axios.get(`https://localhost:44342/api/image/${this.article.id}`).then(result => {
+          let article = result.data
+          if(article.text !== null) {
+            this.article=result.data
+          }
+        })
+      }
     },
     computed: {
       voteColor() {
@@ -90,6 +93,18 @@
         return '#000'
       },
     },
+    watch: {	
+      actualVote(newValue, oldValue) {
+        const fd = new FormData()
+        fd.append('id',  this.article.id)
+        fd.append('point', newValue)
+        this.axios.post("https://localhost:44342/api/vote", fd).then(result => {
+          if(result.data==="ok") {
+            this.reloadActualPicture()
+          }
+        })
+      },	
+    }
   }
 </script>
 
