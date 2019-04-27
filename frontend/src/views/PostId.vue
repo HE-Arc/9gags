@@ -39,6 +39,7 @@
         //TODO Get article id
         this.axios.get(`https://localhost:44342/api/image/${this.$route.params.id}`).then(result => {
           let article = result.data
+          console.log(article)
           if(article.text !== null) {
             this.article=result.data
           } else {

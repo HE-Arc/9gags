@@ -10,7 +10,7 @@
                 <b-button @click.stop="actualVote=1" :style="{color: actualVote===1 ? '#25DD25' : 'white'}"><i class="fas fa-thumbs-up"></i></b-button>
               </div>
               <div class="row justify-content-md-center my-2" :style="{color: voteColor}">
-                  {{vote}}
+                  {{article.points}}
               </div>
               <div class="row">
                 <b-button @click.stop="actualVote=-1"  :style="{color: actualVote===-1 ? '#FF0000' : 'white'}"><i class="fas fa-thumbs-down"></i></b-button>
@@ -46,14 +46,12 @@
     data () {
       return {
         marginImgArticle: 50,
-        vote: 0,
-        actualVote: 0,
+        actualVote: -1,
         showComment: false,
         newCommentContent: "",
       }
     },
     mounted () {
-      this.vote = this.article.vote
       this.loaded = true
     },
     methods: {
@@ -72,20 +70,14 @@
     },
     computed: {
       voteColor() {
-        if(this.vote < 0) {
+        if(this.article.points < 0) {
           return '#FF0000'
-        } if(this.vote > 0) {
+        } if(this.article.points > 0) {
          return '#25DD25'
         }
         return '#000'
       },
     },
-    watch: {
-      actualVote(newValue, oldValue) {
-        this.vote -= oldValue
-        this.vote += newValue
-      },
-    }
   }
 </script>
 
