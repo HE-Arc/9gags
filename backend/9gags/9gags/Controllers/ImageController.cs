@@ -76,12 +76,13 @@ namespace _9gags.Controllers
         #region points
         // PUT: api/image/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(long id, Article item, int point)
+        public async Task<ActionResult<string>> PutTodoItem(long id, int point)
         {
+            Article article = _context.Articles.Find(id);
            int[] pointsOK = new int[] { 1, 0, -1 };
-            if (id != item.Id || !pointsOK.Contains(point))
+            if (article == null || id != article.Id || !pointsOK.Contains(point))
             {
-                return BadRequest();
+                return "err";
             }
 
             long iduser = 1;
@@ -91,17 +92,26 @@ namespace _9gags.Controllers
 
             try
             {
-                if (!user.Votes.ToList().Any())
+                if (user.Votes.ToList().Any())
                 {
-                    user.Votes.Clear();
-                    await _context.SaveChangesAsync();
+                    var vote = user.Votes.Where(v => v.ArticleId == article.Id).First();
+                    vote.Point = point;
+                }
+                else
+                {
+                    user.Votes.Add(new Vote
+                    {
+                        Article = article,
+                        Point = point,
+                    });
+                    
                 }
             }catch(Exception e)
             {
-                return NoContent();
+                return e.ToString();
             }
-
-            return NoContent();
+            await _context.SaveChangesAsync();
+            return "ok";
         }
         #endregion
         #region private methods

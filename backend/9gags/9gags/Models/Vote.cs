@@ -14,7 +14,7 @@ namespace _9gags.Models
         public long UserId { get; set; }
         public User User { get; set; }
 
-        public int vote { get; set; }
+        public int Point { get; set; }
 
     }
 }

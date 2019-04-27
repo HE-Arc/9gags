@@ -14,6 +14,6 @@ namespace _9gags.Models
         public long UserId { get; set; }
         public User User { get; set; }
 
-        public string comment { get; set; }
+        public string Comments { get; set; }
     }
 }

@@ -65,7 +65,7 @@ namespace _9gags.Controllers
                     var voteImage = _context.Articles
                    .Include(e => e.Votes).Where(a => a.Id == resultArticle.Id).First();
 
-                    point = voteImage.Votes.Select(v => v.vote).Sum();
+                    point = voteImage.Votes.Select(v => v.Point).Sum();
                 }
                 catch(Exception ex)
                 {
