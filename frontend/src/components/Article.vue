@@ -1,5 +1,5 @@
 <template>
-  <b-container class="my-3">
+  <b-container class="my-3" @click="goToArticle">
     <b-card-group deck>
       <b-card border-variant="dark" :header="article.name" align="center">
         <b-card-body>
@@ -72,6 +72,9 @@
           this.comments.push({user: 'actualUser', content: this.newCommentContent}) //TODO replace with axios in backend
           this.newCommentContent = ""
         }
+      },
+      goToArticle() {
+        this.$router.push({name: 'post-id', params: {id: this.article.id}})
       },
     },
     computed: {
