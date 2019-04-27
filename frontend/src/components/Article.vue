@@ -46,7 +46,7 @@
     data () {
       return {
         marginImgArticle: 50,
-        actualVote: -1,
+        actualVote: 0,
         showComment: false,
         newCommentContent: "",
       }
@@ -60,8 +60,20 @@
       },
       postComment() {
         if(this.newCommentContent) {
-          //this.comments.push({user: 'actualUser', content: this.newCommentContent}) //TODO replace with axios in backend
-          this.newCommentContent = ""
+          const fd = new FormData()
+            fd.append('id',  this.article.id)
+            fd.append('comment', this.newCommentContent)
+          this.axios.post('https://localhost:44342/api/comment', fd).then(result => {
+            if(result.data === "ok") {
+             this.axios.get(`https://localhost:44342/api/image/${this.article.id}`).then(result => {
+                let article = result.data
+                if(article.text !== null) {
+                 this.article=result.data
+                }
+              })
+            }
+            this.newCommentContent = ""
+            })
         }
       },
       goToArticle() {
