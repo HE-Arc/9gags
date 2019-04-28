@@ -42,7 +42,6 @@
             fd.append('title', this.title)
             this.axios.post('https://localhost:44342/api/image', fd).then(result => {
                 //TODO redirect to post
-                console.log(result)
             })
             this.title = null
             this.image = null
