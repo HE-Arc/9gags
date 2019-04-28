@@ -78,7 +78,9 @@
       },
       shouldRefresh(newValue, oldValue) {
         if(newValue===true) {
-          this.articles = []
+          while(this.articles.length > 0) {
+            this.articles.pop()
+          }
           this.getArticles()
           this.$store.commit('utils/SETSHOULDREFRESH', false)
         }

@@ -31,7 +31,7 @@ const actions = {
         const fd = new FormData()
         fd.append('username',  authResult.idTokenPayload.nickname || authResult.idTokenPayload.name)
         payload.axios.post("https://localhost:44342/api/user", fd).then(result => {
-          payload.router.push({name: 'home'})
+          payload.router.push({name: 'post'})
         })
       }
     })

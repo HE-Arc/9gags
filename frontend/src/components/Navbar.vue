@@ -5,8 +5,8 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item @click="setModeRedirect(1)">New</b-nav-item>
-          <b-nav-item @click="setModeRedirect(2)">Top</b-nav-item>
+          <b-nav-item :active="$store.state.utils.mode===1" @click="setModeRedirect(1)">New</b-nav-item>
+          <b-nav-item :active="$store.state.utils.mode===2" @click="setModeRedirect(2)">Top</b-nav-item>
 
 
         </b-navbar-nav>
