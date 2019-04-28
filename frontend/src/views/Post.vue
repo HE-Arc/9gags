@@ -48,21 +48,21 @@
     methods: {
       getArticles () {
         //Request articles
-        for(let i = 0; i<5; ++i) {
+        for (let i = 0; i < 5; ++i) {
           this.addArticle()
         }
       },
       addArticle () {
         this.axios.get(`https://localhost:44342/api/data/${this.$store.state.utils.mode}`).then(result => {
-            let article = result.data.article
-            if(article && article.title !== null) {
-              this.outOfNew = false
-              article["pointUser"] = result.data.pointUser
-              this.articles.push(article)
-            } else{
-              this.outOfNew = true
-            }
-          })
+          let article = result.data.article
+          if (article && article.title !== null) {
+            this.outOfNew = false
+            article['pointUser'] = result.data.pointUser
+            this.articles.push(article)
+          } else {
+            this.outOfNew = true
+          }
+        })
       },
       bottomVisible () {
         const scrollY = window.scrollY
@@ -72,8 +72,8 @@
         return bottomOfPage || pageHeight < visible
       },
     },
-    computed:{
-      shouldRefresh() {
+    computed: {
+      shouldRefresh () {
         return this.$store.getters['utils/getShouldRefresh']
       },
     },
@@ -83,9 +83,9 @@
           this.addArticle()
         }
       },
-      shouldRefresh(newValue, oldValue) {
-        if(newValue===true) {
-          while(this.articles.length > 0) {
+      shouldRefresh (newValue, oldValue) {
+        if (newValue === true) {
+          while (this.articles.length > 0) {
             this.articles.pop()
           }
           this.getArticles()

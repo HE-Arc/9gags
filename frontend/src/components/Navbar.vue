@@ -13,16 +13,16 @@
 
         <b-navbar-nav class="ml-auto">
           <b-nav-item @click="resetData" class="mr-2"><i class="fas fa-recycle"></i></b-nav-item>
-          <b-nav-item v-b-modal.modal-create class="mr-2" ><i class="fas fa-plus"></i></b-nav-item>
+          <b-nav-item v-b-modal.modal-create class="mr-2"><i class="fas fa-plus"></i></b-nav-item>
           <b-nav-item class="ml-4" @click.prevent="changeLog">
             <i class="mr-1 fas fa-sign-out-alt" v-show="isLogged"></i>
             <i class="mr-1 fas fa-sign-in-alt" v-show="!isLogged"></i>
-             {{textLog}}
+            {{textLog}}
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <modal-create />
+    <modal-create/>
   </div>
 </template>
 
@@ -36,24 +36,24 @@
     },
     methods: {
       changeLog () {
-        if(this.isLogged) {
+        if (this.isLogged) {
           this.$store.dispatch('auth/logout')
-          this.$router.push({name: 'index'})
+          this.$router.push({ name: 'index' })
         } else {
           this.$store.dispatch('auth/login')
         }
       },
-      resetData() {
-        this.axios.delete("https://localhost:44342/api/data").then(result => {
-          if(result.data[0] === "ok") {
+      resetData () {
+        this.axios.delete('https://localhost:44342/api/data').then(result => {
+          if (result.data[0] === 'ok') {
             this.$store.commit('utils/SETSHOULDREFRESH', true)
           }
         })
       },
-      setModeRedirect(m) {
+      setModeRedirect (m) {
         this.$store.commit('utils/SETMODE', m)
         this.$store.commit('utils/SETSHOULDREFRESH', true)
-        this.$router.push({name: 'post'})
+        this.$router.push({ name: 'post' })
       }
     },
     computed: {
@@ -61,8 +61,8 @@
         return this.$store.state.auth.isLogged
       },
       textLog () {
-        if(this.isLogged) {
-          return'sign out'
+        if (this.isLogged) {
+          return 'sign out'
         }
         return 'sign in'
       }

@@ -15,9 +15,9 @@
     components: {
       Navbar,
     },
-    mounted() {
+    mounted () {
       this.$nextTick(() => {
-      this.$store.dispatch('auth/authenticatedFromToken', {axios: this.axios, router: this.$router})
+        this.$store.dispatch('auth/authenticatedFromToken', { axios: this.axios, router: this.$router })
       })
     },
   }
