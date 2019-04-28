@@ -82,7 +82,8 @@ namespace _9gags.Controllers
             Article article = _context.Articles.Include(a => a.Comments).Where(a => a.Id == id).First();
             var pointArticleUser = UserHelper.ArticleUserPoint(_context, userId, article.Id);
             article.Votes.Clear();
-            return new ArticlePointHelper {
+            article.Comments.ForEach(c => c.User.Votes.Clear());
+                return new ArticlePointHelper {
                 Article = article,
                 PointUser = pointArticleUser
             };
