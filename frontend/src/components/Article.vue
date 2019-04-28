@@ -75,9 +75,7 @@
         }
       },
       goToArticle() {
-        console.log("COUCOU")
-        this.$router.push({title: 'post-id', params: {id: this.articleLocal.id}})
-        console.log(this.$router)
+        this.$router.push({name: 'post-id', params: {id: this.articleLocal.id}})
       },
       reloadActualPicture() {
         this.axios.get(`https://localhost:44342/api/image/${this.articleLocal.id}`).then(result => {
