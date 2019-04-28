@@ -46,8 +46,8 @@
       },
       resetData() {
         this.axios.delete("https://localhost:44342/api/data").then(result => {
-          if(result.data === "ok") {
-            //TODO reload post
+          if(result.data[0] === "ok") {
+            this.$store.commit('utils/SETSHOULDREFRESH', true)
           }
         })
       },

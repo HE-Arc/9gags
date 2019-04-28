@@ -65,10 +65,22 @@
         return bottomOfPage || pageHeight < visible
       },
     },
+    computed:{
+      shouldRefresh() {
+        return this.$store.getters['utils/getShouldRefresh']
+      }
+    },
     watch: {
       bottom (bottom) {
         if (bottom) {
           this.addArticle()
+        }
+      },
+      shouldRefresh(newValue, oldValue) {
+        if(newValue===true) {
+          this.articles = []
+          this.getArticles()
+          this.$store.commit('utils/SETSHOULDREFRESH', false)
         }
       }
     }
