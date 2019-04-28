@@ -29,16 +29,11 @@ namespace _9gags.Helper
         public static int ArticleUserPoint(GagsContext context, long userId, long articleId)
         {
         
-            try
-            {
-                var user = context.Users.Where(u => u.Id == userId).First();
-                return user.Votes.Where(v => v.Article.Id == articleId).First().Point;
-            }
-            catch(Exception e)
-            {
-                return 0;
-            }
-            
+        
+                var user = context.Users.Include(u => u.Votes).ThenInclude(v => v.Article)
+                .Where(u => u.Id == userId).First();
+                return user.Votes.Where(v => v.Article.Id == articleId).Select(v => v.Point).First();
+      
             
         }
 }
