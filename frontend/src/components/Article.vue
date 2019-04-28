@@ -19,7 +19,7 @@
           </div>
           <br>
           <b-button class="my-3" @click.stop="showComment= !showComment">{{showComment ? 'Hide comment' : 'Show comment'}}</b-button>
-          <div v-show="showComment" class="row border border-secondary rounded px-2">
+          <div v-show="showComment" @click.stop="" class="row border border-secondary rounded px-2">
             <div class="col-12 my-1 py-2 text-left border border-secondary rounded">
               <b-form-textarea placeholder="Your comment..." v-model="newCommentContent"></b-form-textarea>
               <div class="text-right">
@@ -106,7 +106,7 @@
         }
       },
       addZero(n) {
-        if(n<9){
+        if(n<10){
           return "0" + n
         }
         return n

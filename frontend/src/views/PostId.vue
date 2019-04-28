@@ -43,11 +43,24 @@
             article['pointUser'] = pointUser
             this.article=article
           } else {
-            //TODO redirect to home + show error
+            this.$router.push({name: 'home'})
           }
         })
       },
     },
+    computed:{
+      shouldRefreshSingle() {
+        return this.$store.getters['utils/getShouldRefreshSingle']
+      },
+    },
+     watch: {
+      shouldRefreshSingle(newValue, oldValue) {
+        if(newValue===true) {
+          this.getArticle()
+          this.$store.commit('utils/SETSHOULDREFRESHSINGLE', false)
+        }
+      }
+    }
   }
 </script>
 

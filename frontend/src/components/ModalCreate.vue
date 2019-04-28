@@ -43,6 +43,7 @@
             this.axios.post('https://localhost:44342/api/image', fd).then(result => {
                 if(result.data[0] === "ok") {
                     this.$router.push({name: 'post-id', params:{id: result.data[1]}})
+                    this.$store.commit('utils/SETSHOULDREFRESHSINGLE', true)
                 }
             })
             this.title = null
