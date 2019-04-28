@@ -85,7 +85,7 @@ namespace _9gags.Controllers
                 var pointUser = UserHelper.ArticleUserPoint(_context, userId, resultArticle.Id);
                 resultArticle.Views.Clear();
                 resultArticle.Votes.Clear();
-                resultArticle.Comments.ForEach(c => c.User.Comments.Clear());
+
                 resultArticle.Comments.ForEach(c => c.User.Votes.Clear());
                 resultArticle.Comments.ForEach(c => c.User.Views.Clear());
                 return new ArticlePointHelper { Article = resultArticle,

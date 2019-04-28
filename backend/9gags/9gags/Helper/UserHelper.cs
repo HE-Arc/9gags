@@ -9,32 +9,40 @@ using System.Threading.Tasks;
 namespace _9gags.Helper
 {
     public class UserHelper
-{
-    public static long GetUserIdFromToken(GagsContext context, ClaimsPrincipal user)
+    {
+        public static long GetUserIdFromToken(GagsContext context, ClaimsPrincipal user)
         {
             var auth0 = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             User userDb;
             try
             {
-                 userDb = context.Users.Where(u => u.Auth0.Equals(auth0)).First();
+                userDb = context.Users.Where(u => u.Auth0.Equals(auth0)).First();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                 userDb = new User();
+                userDb = new User();
             }
- 
+
             return userDb.Id;
         }
 
         public static int ArticleUserPoint(GagsContext context, long userId, long articleId)
         {
-        
-        
+
+
+            try
+            {
                 var user = context.Users.Include(u => u.Votes).ThenInclude(v => v.Article)
-                .Where(u => u.Id == userId).First();
+                   .Where(u => u.Id == userId).First();
                 return user.Votes.Where(v => v.Article.Id == articleId).Select(v => v.Point).First();
-      
-            
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+
+
+
         }
-}
+    }
 }
