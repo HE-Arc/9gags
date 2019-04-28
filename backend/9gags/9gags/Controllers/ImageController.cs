@@ -78,15 +78,23 @@ namespace _9gags.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ArticlePointHelper>> GetImage(long id)
         {
-            long userId = UserHelper.GetUserIdFromToken(_context,User);
-            Article article = _context.Articles.Include(a => a.Comments).Where(a => a.Id == id).First();
-            var pointArticleUser = UserHelper.ArticleUserPoint(_context, userId, article.Id);
-            article.Votes.Clear();
-            article.Comments.ForEach(c => c.User.Votes.Clear());
-                return new ArticlePointHelper {
-                Article = article,
-                PointUser = pointArticleUser
-            };
+            try
+            {
+                long userId = UserHelper.GetUserIdFromToken(_context, User);
+                Article article = _context.Articles.Include(a => a.Comments).Where(a => a.Id == id).First();
+                var pointArticleUser = UserHelper.ArticleUserPoint(_context, userId, article.Id);
+                article.Votes.Clear();
+                article.Comments.ForEach(c => c.User.Votes.Clear());
+                return new ArticlePointHelper
+                {
+                    Article = article,
+                    PointUser = pointArticleUser
+                };
+            }
+            catch(Exception e)
+            {
+                return new ArticlePointHelper();
+            }
         }
 
         #endregion
