@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <Article v-for="a in articles" :key="a.id" :article="a"/>
+    <b-container v-show="outOfNew">
+      <h1>You are out of new pictures, come back later or reset the views in the navbar</h1>
+    </b-container>
   </div>
 </template>
 
@@ -16,6 +19,7 @@
       return {
         articles: [],
         bottom: false,
+        outOfNew: false, //When no more pictures can be loaded
       }
     },
     mounted () {
@@ -52,8 +56,11 @@
         this.axios.get(`https://localhost:44342/api/data/${this.$store.state.utils.mode}`).then(result => {
             let article = result.data.article
             if(article && article.title !== null) {
+              this.outOfNew = false
               article["pointUser"] = result.data.pointUser
               this.articles.push(article)
+            } else{
+              this.outOfNew = true
             }
           })
       },
