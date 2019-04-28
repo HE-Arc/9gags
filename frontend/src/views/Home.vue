@@ -7,19 +7,19 @@
 </template>
 
 <script>
-export default {
-   name: 'Home',
-   data() {
-     return{
-    msg: ''
-     }
-   },
-   methods: {
-     makeReq() {
-       this.axios.get('https://localhost:44342/api/values').then(result => {
-         this.msg = result.data
-       })
-     }
-   }
-}
+  export default {
+    name: 'Home',
+    data () {
+      return {
+        msg: ''
+      }
+    },
+    methods: {
+      makeReq () {
+        this.axios.get('https://localhost:44342/api/values').then(result => {
+          this.msg = result.data
+        })
+      }
+    }
+  }
 </script>

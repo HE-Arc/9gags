@@ -8,7 +8,7 @@
   export default {
     name: 'Callback',
     mounted () {
-      this.$store.dispatch('auth/handleAuthentication', {axios: this.axios, router: this.$router})
+      this.$store.dispatch('auth/handleAuthentication', { axios: this.axios, router: this.$router })
     }
   }
 </script>
