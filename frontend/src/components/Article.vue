@@ -7,13 +7,13 @@
           <div class="float-left" ref="buttonArticle" :style="{marginTop: marginImgArticle + 'px'}">
             <div class="col">
               <div class="row">
-                <b-button @click.stop="actualVote=1" :style="{color: actualVote===1 ? '#25DD25' : 'white'}"><i class="fas fa-thumbs-up"></i></b-button>
+                <b-button @click.stop="vote(1)" :style="{color: actualVote===1 ? '#25DD25' : 'white'}"><i class="fas fa-thumbs-up"></i></b-button>
               </div>
               <div class="row justify-content-md-center my-2" :style="{color: voteColor}">
                   {{articleLocal.points}}
               </div>
               <div class="row">
-                <b-button @click.stop="actualVote=-1"  :style="{color: actualVote===-1 ? '#FF0000' : 'white'}"><i class="fas fa-thumbs-down"></i></b-button>
+                <b-button @click.stop="vote(-1)"  :style="{color: actualVote===-1 ? '#FF0000' : 'white'}"><i class="fas fa-thumbs-down"></i></b-button>
               </div>
             </div>
           </div>
@@ -49,12 +49,13 @@
         actualVote: 0,
         showComment: false,
         newCommentContent: "",
-        articleLocal: {id: -1, title: "Default article", path: 'https://image.shutterstock.com/image-vector/download-sign-load-icon-system-260nw-425121802.jpg', points: 0, comments: []},
+        articleLocal: {id: -1, pointUser: 0,title: "Default article", path: 'https://image.shutterstock.com/image-vector/download-sign-load-icon-system-260nw-425121802.jpg', points: 0, comments: []},
       }
     },
     mounted () {
       this.loaded = true
       this.articleLocal = this.article //Load for post page
+      this.actualVote = this.article.pointUser
     },
     methods: {
       calcMarginButton() {
@@ -67,7 +68,6 @@
           fd.append('comment', this.newCommentContent)
           this.newCommentContent = ""
           this.axios.post('https://localhost:44342/api/comment', fd).then(result => {
-            console.log(result.data)
             if(result.data === "ok") {
              this.reloadActualPicture()
             }
@@ -79,11 +79,26 @@
       },
       reloadActualPicture() {
         this.axios.get(`https://localhost:44342/api/image/${this.articleLocal.id}`).then(result => {
-          let article = result.data
+          let article = result.data.article
+          let pointUser = result.data.pointUser
           if(article.id > 0) {
             this.articleLocal=article
+            this.actualVote = pointUser
           }
         })
+      },
+      vote(p) {
+        if(p !== this.actualVote) {
+          this.actualVote = p
+          const fd = new FormData()
+          fd.append('id',  this.articleLocal.id)
+          fd.append('point', p)
+          this.axios.post("https://localhost:44342/api/vote", fd).then(result => {
+            if(result.data==="ok") {
+              this.reloadActualPicture()
+            }
+          })
+        }
       }
     },
     computed: {
@@ -97,18 +112,9 @@
       },
     },
     watch: {	
-      actualVote(newValue, oldValue) {
-        const fd = new FormData()
-        fd.append('id',  this.articleLocal.id)
-        fd.append('point', newValue)
-        this.axios.post("https://localhost:44342/api/vote", fd).then(result => {
-          if(result.data==="ok") {
-            this.reloadActualPicture()
-          }
-        })
-      },
       article(newValue, oldValue) { //Load for id page
         this.articleLocal = newValue
+        this.actualVote = newValue.pointUser
       },
     }
   }

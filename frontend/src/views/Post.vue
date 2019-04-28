@@ -50,8 +50,10 @@
       },
       addArticle () {
         this.axios.get("https://localhost:44342/api/data/1").then(result => {
-            let article = result.data
-            if(article.title !== null) {
+            let article = result.data.article
+            let pointUser = result.data.pointUser
+            if(article && article.title !== null) {
+              article[""]
               this.articles.push(article)
             }
           })
