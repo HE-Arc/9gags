@@ -53,7 +53,7 @@ namespace _9gags.Controllers
                         
                     }
                    var res = await GenerateinDB(directory + filename,title);
-                   return new string[] { res };
+                   return new string[] { "ok", res.ToString() };
 
                 }
                 catch(Exception e)
@@ -108,18 +108,18 @@ namespace _9gags.Controllers
             return $"{imageId.ToString()}{extension}";
 
         }
-       private async Task<string> GenerateinDB(string path, string title)
+       private async Task<long> GenerateinDB(string path, string title)
         {
             Article article = new Article {
                 Title = title,
                 Path = path,
                 points = 0,
                 ReleaseDate = DateTime.Now
-        };
+            };
             _context.Articles.Add(article);
             await _context.SaveChangesAsync();
 
-            return "ok";
+            return article.Id;
         }
         #endregion
 

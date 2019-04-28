@@ -41,7 +41,9 @@
             fd.append('file',  this.image)
             fd.append('title', this.title)
             this.axios.post('https://localhost:44342/api/image', fd).then(result => {
-                //TODO redirect to post
+                if(result.data[0] === "ok") {
+                    this.$router.push({name: 'post-id', params:{id: result.data[1]}})
+                }
             })
             this.title = null
             this.image = null
