@@ -8,11 +8,14 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Threading.Tasks;
 using _9gags.Models;
+using _9gags.Helper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace _9gags.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class VoteController : ControllerBase
     {
         #region initalisation 
@@ -36,12 +39,13 @@ namespace _9gags.Controllers
                 return "err";
             }
 
-            long iduser = 1;
+            long userId = await UserHelper.CreateUserOrGiveId(_context, User);
             var user = _context.Users
             .Include(e => e.Comments)
-            .Where(u => u.Id == iduser).First();
+            .Where(u => u.Id == userId).First();
 
-            var votes = _context.Users.Include(e => e.Votes).ThenInclude(e => e.Article).Where(u => u.Id == iduser).First().Votes.Where(u=>u.Article.Id == article.Id);
+            var votes = _context.Users.Include(e => e.Votes).ThenInclude(e => e.Article).Where(u => u.Id == userId)
+                .First().Votes.Where(u=>u.Article.Id == article.Id);
             int realPoint = getVerifiedPoint(point);
             int oldPoint = 0;
 

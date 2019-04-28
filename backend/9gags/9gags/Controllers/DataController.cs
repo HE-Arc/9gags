@@ -9,10 +9,13 @@ using System.IO;
 using System.Threading.Tasks;
 using _9gags.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using _9gags.Helper;
 
 namespace _9gags.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class DataController : ControllerBase
     {
         #region initalisation 
@@ -30,12 +33,12 @@ namespace _9gags.Controllers
 
         #region get image news
         [HttpGet("{mode}")]
-        public async Task<ActionResult<Article>> GetArticles(long mode)
+        public async Task<ActionResult<ArticlePointHelper>> GetArticles(long mode)
         {
-            long id = 1;
+            long userId = await UserHelper.CreateUserOrGiveId(_context, User);
             var user = _context.Users
             .Include(e => e.Views)
-            .ThenInclude(e => e.Article).Where(u => u.Id == id).First();
+            .ThenInclude(e => e.Article).Where(u => u.Id == userId).First();
             var dbArticles = await _context.Articles.Include(a => a.Comments)
                 .ThenInclude(c => c.User)
                 .ToListAsync();
@@ -55,14 +58,14 @@ namespace _9gags.Controllers
                 }
                 else
                 {
-                    return new Article();
+                    return new ArticlePointHelper();
                 }
 
 
             }
             catch(Exception e)
             {
-                return new Article();
+                return new ArticlePointHelper();
             }
            
             try
@@ -81,12 +84,13 @@ namespace _9gags.Controllers
 
                 resultArticle.Views.Clear();
                 resultArticle.Votes.Clear();
-                return resultArticle;
+                return new ArticlePointHelper { Article = resultArticle,
+                PointUser = 12 };
 
             }
             catch (Exception e)
             {
-                return new Article();
+                return new ArticlePointHelper();
             }
 
             
@@ -96,10 +100,10 @@ namespace _9gags.Controllers
         [HttpDelete]
         public async Task<ActionResult<IEnumerable<string>>> ResetArticles()
         {
-            long id = 1;
+            long userId = await UserHelper.CreateUserOrGiveId(_context, User);
             var user = _context.Users
             .Include(e => e.Views)
-            .ThenInclude(e => e.Article).Where(u => u.Id == id).First();
+            .ThenInclude(e => e.Article).Where(u => u.Id == userId).First();
 
             user.Views.Clear();
             await _context.SaveChangesAsync();

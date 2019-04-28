@@ -10,16 +10,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace _9gags.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class ValuesController : ControllerBase
     {
         // GET api/values
-        [Authorize]
+       
         [HttpGet]
         public  ActionResult<string> Get()
         {
             //Console.Out.WriteLine(this.User);
-            return User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            return "lol";
         }
 
         // GET api/values/5

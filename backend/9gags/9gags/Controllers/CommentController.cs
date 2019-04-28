@@ -9,10 +9,13 @@ using System.IO;
 using System.Threading.Tasks;
 using _9gags.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using _9gags.Helper;
 
 namespace _9gags.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class CommentController : ControllerBase
     {
         #region initalisation 
@@ -28,7 +31,7 @@ namespace _9gags.Controllers
         #region comment
         // PUT: api/comment/5
         [HttpPost]
-        public async Task<ActionResult<string>> PostPoint(long id, string comment)
+        public async Task<ActionResult<string>> PostComment(long id, string comment)
         {
             Article article = _context.Articles.Find(id);
             if (article == null || id != article.Id)
@@ -36,10 +39,10 @@ namespace _9gags.Controllers
                 return "err";
             }
 
-            long iduser = 1;
+            long userId = await UserHelper.CreateUserOrGiveId(_context, User);
             var user = _context.Users
             .Include(e => e.Comments)
-            .Where(u => u.Id == iduser).First();
+            .Where(u => u.Id == userId).First();
 
             try
             {

@@ -9,10 +9,13 @@ using System.IO;
 using System.Threading.Tasks;
 using _9gags.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using _9gags.Helper;
 
 namespace _9gags.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class ImageController : ControllerBase
     {
         #region initalisation 
@@ -73,10 +76,16 @@ namespace _9gags.Controllers
         }
         // PUT: api/image/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Article>> GetImage(long id)
+        public async Task<ActionResult<ArticlePointHelper>> GetImage(long id)
         {
-            Article article = _context.Articles.Include(e => e.Comments).Where(a => a.Id == id).First();
-            return article;
+            long userId = await UserHelper.CreateUserOrGiveId(_context,User);
+            Article article = _context.Articles.Include(a => a.Comments).Where(a => a.Id == id).First();
+            var pointArticleUser = UserHelper.ArticleUserPoint(_context, userId, article.Id);
+            article.Votes.Clear();
+            return new ArticlePointHelper {
+                Article = article,
+                PointUser = pointArticleUser
+            };
         }
 
         #endregion
