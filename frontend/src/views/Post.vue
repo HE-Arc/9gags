@@ -49,7 +49,7 @@
         }
       },
       addArticle () {
-        this.axios.get("https://localhost:44342/api/data/1").then(result => {
+        this.axios.get(`https://localhost:44342/api/data/${this.$store.state.utils.mode}`).then(result => {
             let article = result.data.article
             if(article && article.title !== null) {
               article["pointUser"] = result.data.pointUser
@@ -68,7 +68,7 @@
     computed:{
       shouldRefresh() {
         return this.$store.getters['utils/getShouldRefresh']
-      }
+      },
     },
     watch: {
       bottom (bottom) {
