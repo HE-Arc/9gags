@@ -27,7 +27,7 @@
               </div>
             </div>
             <div class="col-12 my-1 text-left border border-secondary rounded" v-for="(c,i) in articleLocal.comments" :key="i">
-              <small class="my-0">{{c.user}}</small>
+              <small class="my-0">{{c.user ? c.user.username : ""}}</small>
               <p>{{c.comments}}</p>
             </div>
           </div>
@@ -81,6 +81,7 @@
         this.axios.get(`https://localhost:44342/api/image/${this.articleLocal.id}`).then(result => {
           let article = result.data.article
           let pointUser = result.data.pointUser
+          console.log(result.data)
           if(article.id > 0) {
             this.articleLocal=article
             this.actualVote = pointUser
