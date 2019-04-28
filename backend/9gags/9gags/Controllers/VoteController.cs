@@ -39,7 +39,7 @@ namespace _9gags.Controllers
                 return "err";
             }
 
-            long userId = await UserHelper.CreateUserOrGiveId(_context, User);
+            long userId = UserHelper.GetUserIdFromToken(_context, User);
             var user = _context.Users
             .Include(e => e.Comments)
             .Where(u => u.Id == userId).First();

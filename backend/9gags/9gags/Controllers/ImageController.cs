@@ -78,7 +78,7 @@ namespace _9gags.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ArticlePointHelper>> GetImage(long id)
         {
-            long userId = await UserHelper.CreateUserOrGiveId(_context,User);
+            long userId = UserHelper.GetUserIdFromToken(_context,User);
             Article article = _context.Articles.Include(a => a.Comments).Where(a => a.Id == id).First();
             var pointArticleUser = UserHelper.ArticleUserPoint(_context, userId, article.Id);
             article.Votes.Clear();

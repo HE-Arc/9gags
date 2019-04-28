@@ -10,23 +10,19 @@ namespace _9gags.Helper
 {
     public class UserHelper
 {
-    public async static Task<long> CreateUserOrGiveId(GagsContext context, ClaimsPrincipal user)
+    public static long GetUserIdFromToken(GagsContext context, ClaimsPrincipal user)
         {
             var auth0 = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             User userDb;
             try
             {
-                 userDb = context.Users.Where(u => u.auth0.Equals(auth0)).First();
+                 userDb = context.Users.Where(u => u.Auth0.Equals(auth0)).First();
             }
             catch(Exception e)
             {
-                 userDb = null;
+                 userDb = new User();
             }
-            if(userDb == null)
-            {
-                userDb = context.Add(new User { auth0 = auth0 }).Entity;
-            }
-            await context.SaveChangesAsync();
+ 
             return userDb.Id;
         }
 

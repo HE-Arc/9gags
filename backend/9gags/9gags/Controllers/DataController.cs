@@ -35,7 +35,7 @@ namespace _9gags.Controllers
         [HttpGet("{mode}")]
         public async Task<ActionResult<ArticlePointHelper>> GetArticles(long mode)
         {
-            long userId = await UserHelper.CreateUserOrGiveId(_context, User);
+            long userId = UserHelper.GetUserIdFromToken(_context, User);
             var user = _context.Users
             .Include(e => e.Views)
             .ThenInclude(e => e.Article).Where(u => u.Id == userId).First();
@@ -100,7 +100,7 @@ namespace _9gags.Controllers
         [HttpDelete]
         public async Task<ActionResult<IEnumerable<string>>> ResetArticles()
         {
-            long userId = await UserHelper.CreateUserOrGiveId(_context, User);
+            long userId = UserHelper.GetUserIdFromToken(_context, User);
             var user = _context.Users
             .Include(e => e.Views)
             .ThenInclude(e => e.Article).Where(u => u.Id == userId).First();
