@@ -27,7 +27,7 @@
               </div>
             </div>
             <div class="col-12 my-1 text-left border border-secondary rounded" v-for="(c,i) in articleLocal.comments" :key="i">
-              <small class="my-0">{{c.user ? c.user.username : ""}}</small>
+              <div><small class="my-0">{{c.user ? c.user.username : ""}}</small><small class="float-right">{{convertStringToDate(c.releaseDate)}}</small></div>
               <p>{{c.comments}}</p>
             </div>
           </div>
@@ -98,6 +98,18 @@
             }
           })
         }
+      },      
+      convertStringToDate(date) {
+        if(date) {
+          let d = new Date(date)
+          return `${this.addZero(d.getDate())}-${this.addZero(d.getMonth()+1)}-${this.addZero(d.getFullYear())} ${this.addZero(d.getHours())}:${this.addZero(d.getMinutes())}:${this.addZero(d.getSeconds())}`
+        }
+      },
+      addZero(n) {
+        if(n<9){
+          return "0" + n
+        }
+        return n
       }
     },
     computed: {
