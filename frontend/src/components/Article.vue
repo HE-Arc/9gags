@@ -1,5 +1,5 @@
 <template>
-  <b-container class="my-3" @click.stop="goToArticle">
+  <b-container class="my-3" @click="goToArticle">
     <b-card-group deck>
       <b-card border-variant="dark" :header="articleLocal.title" align="center">
         <b-card-body>
@@ -75,16 +75,16 @@
         }
       },
       goToArticle() {
+        console.log("COUCOU")
         this.$router.push({title: 'post-id', params: {id: this.articleLocal.id}})
+        console.log(this.$router)
       },
       reloadActualPicture() {
         this.axios.get(`https://localhost:44342/api/image/${this.articleLocal.id}`).then(result => {
           let article = result.data.article
-          let pointUser = result.data.pointUser
-          console.log(result.data)
           if(article.id > 0) {
             this.articleLocal=article
-            this.actualVote = pointUser
+            this.actualVote = result.data.pointUser
           }
         })
       },

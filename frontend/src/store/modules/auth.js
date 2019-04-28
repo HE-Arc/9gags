@@ -28,8 +28,11 @@ const actions = {
         localStorage.setItem('access_token', authResult.accessToken)
         localStorage.setItem('expires_at', expiresAt)
         this.commit('auth/SETLOGGED', true)
-        //TODO refresh username in backend.
-        payload.router.push({name: 'home'})
+        const fd = new FormData()
+        fd.append('username',  authResult.idTokenPayload.nickname || authResult.idTokenPayload.name)
+        payload.axios.post("https://localhost:44342/api/user", fd).then(result => {
+          payload.router.push({name: 'home'})
+        })
       }
     })
   },
