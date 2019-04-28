@@ -9,8 +9,8 @@ namespace _9gags.Models
     public class User
     {
         public long Id { get; set; }
-        public string auth0 { get; set; }
-        public string username { get; set; }
+        public string Auth0 { get; set; }
+        public string Username { get; set; }
 
 
         public List<Vote> Votes { get; set; } = new List<Vote>();
