@@ -82,10 +82,15 @@ namespace _9gags.Controllers
                     point = 0;
                 }
 
+                var pointUser = UserHelper.ArticleUserPoint(_context, userId, resultArticle.Id);
                 resultArticle.Views.Clear();
                 resultArticle.Votes.Clear();
+                resultArticle.Comments.ForEach(c => c.User.Comments.Clear());
+                resultArticle.Comments.ForEach(c => c.User.Votes.Clear());
+                resultArticle.Comments.ForEach(c => c.User.Views.Clear());
                 return new ArticlePointHelper { Article = resultArticle,
-                PointUser = 12 };
+                PointUser = pointUser
+                };
 
             }
             catch (Exception e)
