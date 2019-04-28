@@ -14,7 +14,7 @@
     },
     data () {
       return {
-        article: {id: 0, name: 'Default title', vote: 0, path: 'https://image.shutterstock.com/image-vector/download-sign-load-icon-system-260nw-425121802.jpg'}, //Default article while charging real
+        article: {id: 0,pointUser:0, name: 'Default title', vote: 0, path: 'https://image.shutterstock.com/image-vector/download-sign-load-icon-system-260nw-425121802.jpg'}, //Default article while charging real
       }
     },
     mounted () {
@@ -37,9 +37,11 @@
       getArticle () {
         //TODO Get article id
         this.axios.get(`https://localhost:44342/api/image/${this.$route.params.id}`).then(result => {
-          let article = result.data
-          if(article.text !== null) {
-            this.article=result.data
+          let article = result.data.article
+          let pointUser = result.data.pointUser
+          if(article && article.text !== null) {
+            article['pointUser'] = pointUser
+            this.article=article
           } else {
             //TODO redirect to home + show error
           }
