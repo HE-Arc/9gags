@@ -48,6 +48,7 @@
     methods: {
       getArticles () {
         //Request articles
+        this.$forceUpdate()
         for (let i = 0; i < 5; ++i) {
           this.addArticle()
         }
